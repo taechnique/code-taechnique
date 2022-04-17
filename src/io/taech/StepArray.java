@@ -32,4 +32,8 @@ public class StepArray {
 
 
     }
+
+    public static void maximum () throws Exception {
+
+    }
 }
