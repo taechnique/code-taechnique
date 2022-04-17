@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
+
 public class StepArray {
     
     
@@ -34,6 +35,19 @@ public class StepArray {
     }
 
     public static void maximum () throws Exception {
+        BufferedReader reader  = new BufferedReader(new InputStreamReader(System.in));
 
+        int result = Integer.parseInt(reader.readLine());
+        int count = 0;
+        for(int i = 0;i < 8; i++) {
+            int next = Integer.parseInt(reader.readLine());
+            if(result < next) {
+                result = next;
+                count = i +2;
+            }
+        }
+
+        System.out.printf("%d\n", result);
+        System.out.printf("%d", count);
     }
 }
