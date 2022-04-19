@@ -2,7 +2,9 @@ package io.taech;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.Set;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.StringTokenizer;
 
 
@@ -34,20 +36,91 @@ public class StepArray {
 
     }
 
+    /**
+     * <h1> 2562 - 최댓값</h1>
+     * <hr />
+     * <p>9개의 서로 다른 자연수가 주어질 때, 이들 중 최댓값을 찾고 그 최댓값이 몇 번째 수인지를 구하는 프로그램을 작성하시오.</p>
+     * <p>예를 들어, 서로 다른 9개의 자연수</p>
+     * <p>3, 29, 38, 12, 57, 74, 40, 85, 61</p>
+     * <p>이 주어지면, 이들 중 최댓값은 85이고, 이 값은 8번째 수이다.</p>
+     * <h2><i>입력: 첫째 줄부터 아홉 번째 줄까지 한 줄에 하나의 자연수가 주어진다. 주어지는 자연수는 100 보다 작다.</i></h2>
+     * <h2><i>출력: 첫째 줄에 최댓값을 출력하고, 둘째 줄에 최댓값이 몇 번째 수인지를 출력한다.</i></h2>
+     */
     public static void maximum () throws Exception {
         BufferedReader reader  = new BufferedReader(new InputStreamReader(System.in));
 
-        int result = Integer.parseInt(reader.readLine());
-        int count = 0;
-        for(int i = 0;i < 8; i++) {
-            int next = Integer.parseInt(reader.readLine());
-            if(result < next) {
-                result = next;
-                count = i +2;
+        int [] array = new int[9];
+
+        for (int i = 0; i < array.length; i++) {
+            array[i] = Integer.parseInt(reader.readLine());
+        }
+        int max = array[0];
+        int num = 1;
+        for (int i = 1; i < array.length; i++) {
+            if(max < array[i]) {
+                max = array[i];
+                num = i + 1;
             }
         }
 
-        System.out.printf("%d\n", result);
-        System.out.printf("%d", count);
+        System.out.printf("%d\n%d", max, num);
     }
+    
+    /**
+     * <h1> 2577 - 숫자의 개수</h1>
+     * <hr/>
+     * <div>
+     *  <p>세 개의 자연수 A, B, C가 주어질 때 A × B × C를 계산한 결과에 0부터 9까지 각각의 숫자가 몇 번씩 쓰였는지를 구하는 프로그램을 작성하시오.</p>
+     *  <p>예를 들어 A = 150, B = 266, C = 427 이라면&nbsp;A × B × C = 150 × 266 × 427 = 17037300 이 되고,&nbsp;계산한 결과 17037300 에는 0이 3번, 1이 1번, 3이 2번, 7이 2번 쓰였다.</p>
+     * </div>
+     * <h2><i>입력: 첫째 줄에 A, 둘째 줄에 B, 셋째 줄에 C가 주어진다. A, B, C는 모두 100보다 크거나 같고, 1,000보다 작은 자연수이다.</i></h2>
+     * <h2><i>출력: 첫째 줄에는 A × B × C의 결과에 0 이 몇 번 쓰였는지 출력한다. 마찬가지로 둘째 줄부터 열 번째 줄까지 A × B × C의 결과에 1부터 9까지의 숫자가 각각 몇 번 쓰였는지 차례로 한 줄에 하나씩 출력한다.</i></h2>
+     */
+     public static void numberOfNumber () throws Exception {
+         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+
+         int i = 0, num = 1;
+
+         while(i++ < 3) {
+             num *= Integer.parseInt(reader.readLine());
+         }
+
+         int [] resultArray = new int[10];
+         String result = String.valueOf(num);
+
+         for (int j = 0; j < result.length(); j++) {
+             resultArray[(result.charAt(j) - 48)]++;
+         }
+
+         for (int j = 0; j < resultArray.length; j++) {
+             System.out.println(resultArray[j]);
+         }
+
+
+     
+     }
+     
+     /**
+      * <h1> 3052 - 나머지</h1>
+      * <hr/>
+      * <div>
+      *     <p>두 자연수 A와 B가 있을 때, A%B는 A를 B로 나눈 나머지 이다. 예를 들어, 7, 14, 27, 38을 3으로 나눈 나머지는 1, 2, 0, 2이다.</p>
+      *     <p>수 10개를 입력받은 뒤, 이를 42로 나눈 나머지를 구한다. 그 다음 서로 다른 값이 몇 개 있는지 출력하는 프로그램을 작성하시오.</p>
+      * </div>
+      * <h2><i>입력: 첫째 줄부터 열번째 줄 까지 숫자가 한 줄에 하나씩 주어진다. 이 숫자는 1,000보다 작거나 같고, 음이 아닌 정수이다.</i></h2>
+      * <h2><i>출력: 첫째 줄에, 42로 나누었을 때, 서로 다른 나머지가 몇 개 있는지 출력한다.</i></h2>
+      */
+      public static void mod () throws Exception {
+          BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+
+          Set<Integer> set = new HashSet<>();
+          for (int i = 0; i < 10; i++) {
+              int mod = Integer.parseInt(reader.readLine()) % 42;
+              set.add(mod);
+          }
+
+          System.out.println(set.size());
+
+      }
+
 }
