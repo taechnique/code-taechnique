@@ -176,10 +176,63 @@ public class StepArray {
             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
             int size = Integer.parseInt(reader.readLine());
-            while (size-- > 0);
+            while (size-- > 0) {
+                String quizResult = reader.readLine();
+
+                int result = 0;
+                int currentResult = 0;
+
+                for (int i = 0; i < quizResult.length(); i++) {
+                    char c = quizResult.charAt(i);
+
+                    if(c == 'X') {
+                        currentResult = 0;
+                        continue;
+                    }
+
+                    else
+                        result += ++currentResult;
 
 
-
+                }
+                System.out.println(result);
+            }
         }
+        
+        /**
+         * <h1> 4344 - 평균은 넘겠지</h1>
+         * <hr/>
+         * <div><p>대학생 새내기들의 90%는 자신이 반에서 평균은 넘는다고 생각한다. 당신은 그들에게 슬픈 진실을 알려줘야 한다.</p></div>
+         * <br/>
+         * <h2><i>입력: 첫째 줄에는 테스트 케이스의 개수 C가 주어진다.
+         *
+         * 둘째 줄부터 각 테스트 케이스마다 학생의 수 N(1 ≤ N ≤ 1000, N은 정수)이 첫 수로 주어지고, 이어서 N명의 점수가 주어진다. 점수는 0보다 크거나 같고, 100보다 작거나 같은 정수이다.</i></h2>
+         * <h2><i>출력: 각 케이스마다 한 줄씩 평균을 넘는 학생들의 비율을 반올림하여 소수점 셋째 자리까지 출력한다.</i></h2>
+         */
+         public static void itCouldBeOverTheAverage () throws Exception {
+             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+
+             int numberOfClass = Integer.parseInt(reader.readLine());
+
+             while(numberOfClass-- > 0) {
+                 final StringTokenizer tokenizer = new StringTokenizer(reader.readLine(), " ");
+
+                 int numberOfStudent = Integer.parseInt(tokenizer.nextToken());
+                 int scores [] = new int [numberOfStudent];
+                 int sum = 0;
+
+                 for (int i = 0; i < numberOfStudent; i++) {
+                     int score = Integer.parseInt(tokenizer.nextToken());
+                     sum += score;
+                     scores[i] = score;
+                 }
+
+                 final float AVERAGE = sum / (numberOfStudent * 1.0f);
+
+                 float percent = (Arrays.stream(scores).filter(sc -> sc > AVERAGE).count() / (numberOfStudent * 1.0f) * 100.0f);
+                 System.out.printf("%.3f%%\n", percent);
+
+             }
+         }
 
 }
