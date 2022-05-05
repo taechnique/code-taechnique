@@ -47,11 +47,11 @@ public class HeapSort {
             arr[large] = temp;
 
             node = large;
+            System.out.println(drawBinaryTree(arr));
         } while(node <= eh);
     }
 
-    public static String printBinaryTree(int arr []) {
-        String result = null;
+    public static String drawBinaryTree(int arr []) {
         StringBuilder builder = new StringBuilder();
 
         int nol = (int) (Math.log(arr.length) / Math.log(2)) + 1;
@@ -61,15 +61,13 @@ public class HeapSort {
             int perFloor = (int) Math.pow(2, i);
 
             int last = printed + perFloor;
-            for(int j = printed;(last < arr.length && j < last);j++) {
-                System.out.printf("[%d]", arr[j]);
+            for(int j = printed;(j < arr.length && j < last);j++) {
+                builder.append(String.format("(%d)", arr[j]));
             }
-            System.out.println();
+            builder.append("\n");
             printed += perFloor;
         }
 
-
-
-        return result;
+        return builder.toString();
     }
 }
