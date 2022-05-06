@@ -6,29 +6,30 @@ public class HeapSort {
 
     public static void makeHeap(int arr []) {
         // last heap
-        int lh = (arr.length / 2) - 1;
-        System.out.println("arr = " + Arrays.toString(arr));
-        int eh = lh;
+        int lh = arr.length / 2;
+        System.out.println("Normal Array = " + Arrays.toString(arr));
+        int eh = arr.length;
         while(lh-- > 0) {
+
+            System.out.println("i: " + lh);
             pushDown(arr, lh, eh);
         }
 
-        System.out.println("arr = " + Arrays.toString(arr));
+        System.out.println("Array as Max Heap = " + Arrays.toString(arr));
     }
 
-    public static int findLargest(int arr [], int node) {
+    public static int findLargest(int arr [], int node, int eh) {
         // first child
         int fc = (2 * (node + 1)) - 1;
-        int n = arr.length - 1;
 
-        if(fc + 1  <= n) {
+        if(fc + 1  < eh) {
             if (arr[fc] <= arr[fc + 1]) {
                 return arr[fc + 1] <= arr[node] ? node : fc + 1;
             } else {
                 return arr[fc] <= arr[node] ? node : fc;
             }
         }
-        if (arr[node] < arr[fc]) {
+        if (fc < eh && arr[node] < arr[fc]) {
             return fc;
         } else {
             return node;
@@ -37,8 +38,10 @@ public class HeapSort {
 
     public static void pushDown(int arr [], int node, int eh) {
         do {
+            System.out.println("j: " +node);
             int temp = arr[node];
-            int large = findLargest(arr, node);
+            int large = findLargest(arr, node, eh);
+            System.out.println(drawBinaryTree(arr));
 
             if(large == node)
                 break;
@@ -47,22 +50,42 @@ public class HeapSort {
             arr[large] = temp;
 
             node = large;
-            System.out.println(drawBinaryTree(arr));
         } while(node <= eh);
     }
+
+    public static void sort(int arr []) {
+        int last = arr.length;
+        makeHeap(arr);
+
+        while (--last >= 0) {
+
+            int temp = arr[0];
+            arr[0] = arr[last];
+            arr[last] = temp;
+
+            System.out.println("last: " + last);
+            pushDown(arr, 0 , last);
+        } ;
+    }
+
 
     public static String drawBinaryTree(int arr []) {
         StringBuilder builder = new StringBuilder();
 
         int nol = (int) (Math.log(arr.length) / Math.log(2)) + 1;
         int max = (int) Math.pow(2, nol - 1);
+
         int printed = 0;
         for(int i = 0; i < nol;i++) {
             int perFloor = (int) Math.pow(2, i);
-
+            int tab = (max - perFloor) / 2 + (max - perFloor) % 2;
             int last = printed + perFloor;
+
+            for (int j = 0; j < tab; j++) {
+                builder.append("  ");
+            }
             for(int j = printed;(j < arr.length && j < last);j++) {
-                builder.append(String.format("(%d)", arr[j]));
+                    builder.append(String.format("(%d)", arr[j]));
             }
             builder.append("\n");
             printed += perFloor;
