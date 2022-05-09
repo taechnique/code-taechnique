@@ -4,18 +4,25 @@ import java.util.Arrays;
 
 public class HeapSort {
 
-    public static void makeHeap(int arr []) {
+    public static void makeHeap(int arr[]) {
+        makeHeap(arr, false);
+    }
+    public static void makeHeap(int arr [], boolean needPrint) {
         // last heap
         int lh = arr.length / 2;
-        System.out.println("Normal Array = " + Arrays.toString(arr));
+
+        if(needPrint)
+            System.out.println("Normal Array = " + Arrays.toString(arr));
+
         int eh = arr.length;
         while(lh-- > 0) {
 
-            System.out.println("i: " + lh);
-            pushDown(arr, lh, eh);
+            if(needPrint)
+                System.out.println("i: " + lh);
+            pushDown(arr, lh, eh, needPrint);
         }
-
-        System.out.println("Array as Max Heap = " + Arrays.toString(arr));
+        if(needPrint)
+            System.out.println("Array as Max Heap = " + Arrays.toString(arr));
     }
 
     public static int findLargest(int arr [], int node, int eh) {
@@ -36,12 +43,14 @@ public class HeapSort {
         }
     }
 
-    public static void pushDown(int arr [], int node, int eh) {
+    public static void pushDown(int arr [], int node, int eh, boolean needPrint) {
         do {
-            System.out.println("j: " +node);
+            if(needPrint)
+                System.out.println("j: " +node);
             int temp = arr[node];
             int large = findLargest(arr, node, eh);
-            System.out.println(drawBinaryTree(arr));
+            if(needPrint)
+                System.out.println(drawBinaryTree(arr));
 
             if(large == node)
                 break;
@@ -53,7 +62,7 @@ public class HeapSort {
         } while(node <= eh);
     }
 
-    public static void sort(int arr []) {
+    public static void sort(int arr [], boolean needPrint) {
         int last = arr.length;
         makeHeap(arr);
 
@@ -63,8 +72,10 @@ public class HeapSort {
             arr[0] = arr[last];
             arr[last] = temp;
 
-            System.out.println("last: " + last);
-            pushDown(arr, 0 , last);
+            if(needPrint)
+                System.out.println("last: " + last);
+
+            pushDown(arr, 0 , last, needPrint);
         } ;
     }
 
