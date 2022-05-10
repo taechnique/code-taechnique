@@ -4,7 +4,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class DepthFirstSearch {
+public class DepthFirstSearch extends AbstractCompleteSearch {
 
     private Node[] graph;
 
@@ -26,6 +26,7 @@ public class DepthFirstSearch {
         }
     }
 
+    @Override
     public List<Node> once(Integer... nodes) {
         Objects.requireNonNull(nodes);
         List<Node> nodeList = new ArrayList<>();
@@ -37,6 +38,8 @@ public class DepthFirstSearch {
         return nodeList;
     }
 
+
+    @Override
     public void addNeighbours(int index, List<Node> nodes) {
         checkRange(index);
         Objects.requireNonNull(nodes);
@@ -44,6 +47,7 @@ public class DepthFirstSearch {
         this.graph[index].setNeighbours(nodes);
     }
 
+    @Override
     public void search(Node v) {
         System.out.println(v);
         v.visited = true;
