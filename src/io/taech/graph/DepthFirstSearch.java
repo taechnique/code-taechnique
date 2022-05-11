@@ -1,29 +1,15 @@
-package io.taech;
+package io.taech.graph;
 
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class DepthFirstSearch extends AbstractCompleteSearch {
+class DepthFirstSearch extends AbstractCompleteSearch {
 
-    private Node[] graph;
 
     public DepthFirstSearch(int graphSize) {
-        this.graph = IntStream.range(0, graphSize).mapToObj(i ->
+        super.graph = IntStream.range(0, graphSize).mapToObj(i ->
                 new Node(i)).collect(Collectors.toList()).toArray(new Node[graphSize]);
-    }
-
-    public Node get(int index) {
-        checkRange(index);
-
-        return this.graph[index];
-    }
-
-    private void checkRange(int index) {
-
-        if (index >= graph.length) {
-            throw new ArrayIndexOutOfBoundsException("범위 초과");
-        }
     }
 
     @Override
@@ -32,19 +18,10 @@ public class DepthFirstSearch extends AbstractCompleteSearch {
         List<Node> nodeList = new ArrayList<>();
 
         for(Integer node : nodes) {
-            nodeList.add(this.graph[node]);
+            nodeList.add(super.graph[--node]);
         }
 
         return nodeList;
-    }
-
-
-    @Override
-    public void addNeighbours(int index, List<Node> nodes) {
-        checkRange(index);
-        Objects.requireNonNull(nodes);
-
-        this.graph[index].setNeighbours(nodes);
     }
 
     @Override
@@ -63,25 +40,25 @@ public class DepthFirstSearch extends AbstractCompleteSearch {
         }
     }
 
-    public void searchWithStack(Node v) {
+    @Override
+    public void searchWithoutRecursive(Node v) {
         Stack<Node> nodeStack = new Stack<>();
 
         nodeStack.push(v);
 
         while( ! nodeStack.isEmpty()) {
-            Node next = nodeStack.pop();
 
+            Node next = nodeStack.pop();
             if(next.isNotVisited()) {
                 next.visit();
-                System.out.printf("\tgraph: %s\n", nodeStack);
+                System.out.printf("\t stack: %s\n", nodeStack);
                 List<Node> neighbours = next.getNeighbours();
 
                 for (int i = 0; i < neighbours.size(); i++) {
-                    Node neighbour = neighbours.get(i);
-                    if(neighbour.isNotVisited())
-                        nodeStack.push(neighbour);
+                    Node child = neighbours.get(i);
+                    if(child.isNotVisited())
+                        nodeStack.push(child);
                 }
-
             }
         }
 

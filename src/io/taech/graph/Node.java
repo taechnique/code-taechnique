@@ -1,8 +1,7 @@
-package io.taech;
+package io.taech.graph;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class Node {
 
