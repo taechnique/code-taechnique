@@ -12,7 +12,7 @@ public class CompleteSearchManager {
         return manager;
     }
 
-    public static CompleteSearch<Node> searchAs(SearchConstant constant, Integer graphSize) {
+    public static CompleteSearch<Node> searchAs(SearchOption constant, Integer graphSize) {
         switch (constant) {
             case BFS:
                 return new BreathFirstSearch(graphSize);

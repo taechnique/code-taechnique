@@ -21,7 +21,7 @@ public class Node {
 
     public Node visit() {
         this.visited = true;
-        System.out.print(this);
+        System.out.print(this+"\n");
         return this;
     }
 
@@ -40,5 +40,14 @@ public class Node {
     @Override
     public String toString() {
         return " ("+(this.info +1)+") ";
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if( ! (obj instanceof Node))
+            return false;
+
+        final Node other = (Node) obj;
+        return this.info == other.info;
     }
 }

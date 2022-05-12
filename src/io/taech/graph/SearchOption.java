@@ -1,6 +1,6 @@
 package io.taech.graph;
 
-public enum SearchConstant {
+public enum SearchOption {
     BFS,
     DFS
 }

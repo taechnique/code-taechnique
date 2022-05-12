@@ -26,6 +26,33 @@ class DepthFirstSearch extends AbstractCompleteSearch {
 
     @Override
     public void search(Node v) {
+        Stack<Node> nodeStack = new Stack<>();
+        Stack<Node> ways = new Stack<Node>();
+
+        nodeStack.push(v);
+        ways.push(v);
+
+        while (!nodeStack.isEmpty()) {
+
+            Node next = nodeStack.pop();
+            if (next.isNotVisited()) {
+                next.visit();
+                System.out.printf("\t stack: %s\t ways -> %s\n ", nodeStack, ways);
+                List<Node> neighbours = next.getNeighbours();
+
+                for (int i = 0; i < neighbours.size(); i++) {
+                    Node child = neighbours.get(i);
+                    if (child.isNotVisited()){
+                        nodeStack.push(child);
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public void searchWithRecursive(Node v) {
+
         System.out.println(v);
         v.visited = true;
 
@@ -38,30 +65,6 @@ class DepthFirstSearch extends AbstractCompleteSearch {
                 search(nei);
             }
         }
-    }
-
-    @Override
-    public void searchWithoutRecursive(Node v) {
-        Stack<Node> nodeStack = new Stack<>();
-
-        nodeStack.push(v);
-
-        while( ! nodeStack.isEmpty()) {
-
-            Node next = nodeStack.pop();
-            if(next.isNotVisited()) {
-                next.visit();
-                System.out.printf("\t stack: %s\n", nodeStack);
-                List<Node> neighbours = next.getNeighbours();
-
-                for (int i = 0; i < neighbours.size(); i++) {
-                    Node child = neighbours.get(i);
-                    if(child.isNotVisited())
-                        nodeStack.push(child);
-                }
-            }
-        }
-
     }
 
 

@@ -46,12 +46,10 @@ class BreathFirstSearch extends AbstractCompleteSearch {
                 }
             }
         }
-
-
     }
 
     @Override
-    public void searchWithoutRecursive(Node v) {
+    public void searchWithRecursive(Node v) {
 
     }
 }
