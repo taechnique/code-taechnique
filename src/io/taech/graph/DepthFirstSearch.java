@@ -26,27 +26,57 @@ class DepthFirstSearch extends AbstractCompleteSearch {
 
     @Override
     public void search(Node v) {
-        Stack<Node> nodeStack = new Stack<>();
-        Stack<Node> ways = new Stack<Node>();
 
+//        searchWithThrowUp(v);
+//        if(v != null)
+//            return;
+
+        Stack<Node> nodeStack = new Stack<>();
         nodeStack.push(v);
-        ways.push(v);
 
         while (!nodeStack.isEmpty()) {
 
             Node next = nodeStack.pop();
             if (next.isNotVisited()) {
                 next.visit();
-                System.out.printf("\t stack: %s\t ways -> %s\n ", nodeStack, ways);
                 List<Node> neighbours = next.getNeighbours();
 
                 for (int i = 0; i < neighbours.size(); i++) {
                     Node child = neighbours.get(i);
-                    if (child.isNotVisited()){
+
+                    if (child.isNotVisited())
                         nodeStack.push(child);
+
+                }
+                System.out.printf("\t stack -> %-30s\n", nodeStack);
+            }
+        }
+    }
+
+    public void searchWithThrowUp(Node v) {
+        final Stack<Node> nodeStack = new Stack<>();
+
+        nodeStack.push(v);
+        while( ! nodeStack.isEmpty()) {
+
+            final Node next = nodeStack.peek();
+            if(next.isNotVisited()) {
+
+                next.visit();
+
+                if(next.hasNotVisitedNodes()) {
+                    final Node nextNoVisited = next.getNextNoVisited();
+                    nodeStack.push(nextNoVisited);
+                } else {
+                    nodeStack.pop();
+                    if( ! nodeStack.isEmpty()){
+                        final Node parent = nodeStack.peek();
+                        parent.cancelVisit();
                     }
                 }
             }
+
+            System.out.printf("\t stack -> %-30s\n", nodeStack);
         }
     }
 
@@ -54,7 +84,7 @@ class DepthFirstSearch extends AbstractCompleteSearch {
     public void searchWithRecursive(Node v) {
 
         System.out.println(v);
-        v.visited = true;
+        v.visit();
 
         List<Node> neighbours = v.getNeighbours();
 
@@ -66,6 +96,5 @@ class DepthFirstSearch extends AbstractCompleteSearch {
             }
         }
     }
-
 
 }

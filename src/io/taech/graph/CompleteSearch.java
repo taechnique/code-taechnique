@@ -16,4 +16,8 @@ public interface CompleteSearch <T> {
     void addNeighbours(Integer index, List<T> nodes);
 
     void searchWithRecursive(T v);
+
+    void setTarget(Integer node);
+
+    Node getTarget();
 }

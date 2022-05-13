@@ -52,4 +52,5 @@ class BreathFirstSearch extends AbstractCompleteSearch {
     public void searchWithRecursive(Node v) {
 
     }
+
 }

@@ -6,6 +6,7 @@ import java.util.Objects;
 abstract class AbstractCompleteSearch implements CompleteSearch<Node> {
 
     protected Node[] graph;
+    private Integer target;
 
     protected final void checkRange(int index) {
 
@@ -27,5 +28,16 @@ abstract class AbstractCompleteSearch implements CompleteSearch<Node> {
         checkRange(--index);
 
         return this.graph[index];
+    }
+
+    @Override
+    public void setTarget(Integer node) {
+        checkRange(--node);
+        this.target = node;
+    }
+
+    @Override
+    public Node getTarget() {
+        return this.graph[target];
     }
 }

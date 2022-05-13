@@ -2,8 +2,9 @@ package io.taech.graph;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class Node {
+public class Node implements Comparable {
 
     int info;
     boolean visited;
@@ -19,10 +20,18 @@ public class Node {
         return ( ! this.visited);
     }
 
-    public Node visit() {
+    public void visit() {
         this.visited = true;
-        System.out.print(this+"\n");
-        return this;
+        System.out.print(this);
+    }
+
+    public void cancelVisit() {
+        this.visited = false;
+    }
+
+    public boolean hasNotVisitedNodes() {
+        return (this.neighbours.stream().filter(n ->
+                n.isNotVisited()).collect(Collectors.toList()).size() != 0);
     }
 
     public void addNeighbours(Node neighboursNode) {
@@ -34,7 +43,7 @@ public class Node {
     }
 
     public void setNeighbours(List<Node> neighbours) {
-        this.neighbours = neighbours;
+        this.neighbours = neighbours.stream().sorted().collect(Collectors.toList());
     }
 
     @Override
@@ -49,5 +58,19 @@ public class Node {
 
         final Node other = (Node) obj;
         return this.info == other.info;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        if( ! (o instanceof Node))
+            return 0;
+
+        Node other = (Node) o;
+        return other.info - this.info;
+    }
+
+    public Node getNextNoVisited() {
+        return this.neighbours.stream().filter(n ->
+                n.isNotVisited()).sorted().findFirst().get();
     }
 }
