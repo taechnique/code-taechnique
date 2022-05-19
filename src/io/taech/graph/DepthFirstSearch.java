@@ -27,9 +27,10 @@ class DepthFirstSearch extends AbstractCompleteSearch {
     @Override
     public void search(Node v) {
 
-//        searchWithThrowUp(v);
-//        if(v != null)
-//            return;
+        searchNetworks();
+        if(v != null)
+            return;
+
 
         Stack<Node> nodeStack = new Stack<>();
         nodeStack.push(v);
@@ -80,6 +81,44 @@ class DepthFirstSearch extends AbstractCompleteSearch {
         }
     }
 
+    public void searchNetworks() throws IllegalArgumentException {
+        int n = 3;
+        int [][] computers =  {{1, 1, 0}, {1, 1, 0}, {0, 0, 1}};
+        if (computers.length == 0 || computers.length > 200) {
+            throw new IllegalArgumentException();
+        }
+        int answer = 0;
+        boolean visited[] = new boolean[n];
+
+        for (int i = 0; i < visited.length; i++) {
+
+            if ( ! visited[i]) {
+                final Queue<Network> queue = new LinkedList<>();
+                visited[i] = true;
+                queue.offer(new Network(i, computers[i]));
+
+                while ( ! queue.isEmpty()) {
+                    Network node = queue.poll();
+                    System.out.println(node.getNo());
+                    if (!visited[node.getNo()]) {
+                        visited[node.getNo()] = true;
+
+                        int[] networks = node.getNetworks();
+                        for (int j = 0; j < networks.length; j++) {
+                            if ( ! visited[j]) {
+                                queue.offer(new Network(j, computers[j]));
+                            }
+                        }
+                    }
+                }
+
+                answer++;
+            }
+        }
+        System.out.println("answer = " + answer);
+    }
+
+
     @Override
     public void searchWithRecursive(Node v) {
 
@@ -98,3 +137,5 @@ class DepthFirstSearch extends AbstractCompleteSearch {
     }
 
 }
+
+
