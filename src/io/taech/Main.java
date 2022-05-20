@@ -9,6 +9,9 @@ import io.taech.print.DefaultPrinter;
 import io.taech.print.Member;
 import io.taech.print.Printer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Main {
 
     public static void main(String[] args) throws Exception {
@@ -42,5 +45,12 @@ public class Main {
         Member member = new Member();
         member.setInfo(1, "f");
         printer.print(member);
+
+
+
+
+        List<String[]> optionList = new ArrayList<>();
+
+
     }
 }
