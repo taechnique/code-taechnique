@@ -80,10 +80,10 @@ class DepthFirstSearch extends AbstractCompleteSearch {
             System.out.printf("\t stack -> %-30s\n", nodeStack);
         }
     }
-
+    //= 프로그래머스 네트워크 ==//
     public void searchNetworks() throws IllegalArgumentException {
         int n = 3;
-        int [][] computers =  {{1, 1, 0}, {1, 1, 0}, {0, 0, 1}};
+        int [][] computers =  {{1, 1, 0}, {1, 1, 1}, {0, 1, 1}};
         if (computers.length == 0 || computers.length > 200) {
             throw new IllegalArgumentException();
         }
@@ -93,20 +93,19 @@ class DepthFirstSearch extends AbstractCompleteSearch {
         for (int i = 0; i < visited.length; i++) {
 
             if ( ! visited[i]) {
-                final Queue<Network> queue = new LinkedList<>();
-                visited[i] = true;
-                queue.offer(new Network(i, computers[i]));
+                final Stack<Network> stack = new Stack<>();
+                stack.push(new Network(i, computers[i]));
 
-                while ( ! queue.isEmpty()) {
-                    Network node = queue.poll();
+                while ( !stack.isEmpty()) {
+                    Network node = stack.pop();
                     System.out.println(node.getNo());
-                    if (!visited[node.getNo()]) {
+                    if ( ! visited[node.getNo()]) {
                         visited[node.getNo()] = true;
 
                         int[] networks = node.getNetworks();
                         for (int j = 0; j < networks.length; j++) {
-                            if ( ! visited[j]) {
-                                queue.offer(new Network(j, computers[j]));
+                            if ( ! visited[j] && computers[node.getNo()][j] == 1) {
+                                stack.push(new Network(j, computers[j]));
                             }
                         }
                     }
@@ -116,6 +115,12 @@ class DepthFirstSearch extends AbstractCompleteSearch {
             }
         }
         System.out.println("answer = " + answer);
+    }
+
+    public static void convertWord(String begin, String target, String[] words) {
+        int answer = 0;
+        boolean visited [] = new boolean [words.length];
+        
     }
 
 

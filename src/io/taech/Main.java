@@ -5,10 +5,17 @@ import io.taech.graph.CompleteSearch;
 import io.taech.graph.CompleteSearchManager;
 import io.taech.graph.Node;
 import io.taech.graph.SearchOption;
+import io.taech.print.DefaultPrinter;
+import io.taech.print.Member;
+import io.taech.print.Printer;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
 
     public static void main(String[] args) throws Exception {
+
         CompleteSearch<Node> dfs = CompleteSearchManager.searchAs(SearchOption.DFS, 20);
 //        CompleteSearch<Node> bfs = CompleteSearchManager.searchAs(SearchOption.BFS, 13);
 //
@@ -33,6 +40,7 @@ public class Main {
 //        bfs.addNeighbours(8, bfs.once(5, 7, 9));
 //        bfs.addNeighbours(9, bfs.once(8));
 //        dfs.setTarget(20);
+
         dfs.search(dfs.get(1));
 
     }
