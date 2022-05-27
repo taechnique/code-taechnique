@@ -15,7 +15,8 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-//        CompleteSearch<Node> dfs = CompleteSearchManager.searchAs(SearchOption.DFS, 20);
+
+        CompleteSearch<Node> dfs = CompleteSearchManager.searchAs(SearchOption.DFS, 20);
 //        CompleteSearch<Node> bfs = CompleteSearchManager.searchAs(SearchOption.BFS, 13);
 //
 //        dfs.addNeighbours(1, dfs.once(2));
@@ -39,18 +40,8 @@ public class Main {
 //        bfs.addNeighbours(8, bfs.once(5, 7, 9));
 //        bfs.addNeighbours(9, bfs.once(8));
 //        dfs.setTarget(20);
-//        dfs.search(dfs.get(1));
 
-        Printer printer = new DefaultPrinter();
-        Member member = new Member();
-        member.setInfo(1, "f");
-        printer.print(member);
-
-
-
-
-        List<String[]> optionList = new ArrayList<>();
-
+        dfs.search(dfs.get(1));
 
     }
 }
