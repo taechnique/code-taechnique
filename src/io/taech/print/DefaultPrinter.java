@@ -3,20 +3,23 @@ package io.taech.print;
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class DefaultPrinter implements Printer {
 
-    private static final Integer DEFAULT_NULL_LENGTH = 6;
+    private static final int DEFAULT_NULL_LENGTH = 6;
     private static final String DEFAULT_NULL_STRING = "(null)";
+    private static final int DEFAULT_COLUMN_LENGTH = 30;
+    private static final String APEX = "+";
 
     @Override
-    public void print(Object obj) throws Exception {
+    public void print(final Object obj) throws Exception {
         Objects.requireNonNull(obj);
         final List<Column> columns = new ArrayList<>();
         final Field[] fields = obj.getClass().getDeclaredFields();
         Integer totalLength = 0;
 
-        Map<String, Object> columnMap = new HashMap<>();
+        final Map<String, Object> columnMap = new HashMap<>();
 
         for (int i = 0; i < fields.length; i++) {
             try {
@@ -41,46 +44,48 @@ public class DefaultPrinter implements Printer {
                 final Object value = field.get(obj);
                 final String fieldName = field.getName();
                 final Integer length = value.toString().getBytes(StandardCharsets.UTF_8).length;
-                final int columnLength = columns.get(i).length;
+                final Column column = columns.get(i);
+                final int columnLength = column.length;
                 if(columnLength <= length) {
                     totalLength -= columnLength;
                     totalLength += length;
-                    columns.get(i).setLength(length);
+                    column.setLength(length);
                 }
                 columnMap.put(fieldName, value);
             } catch(Exception e) {
                 throw e;
             }
         }
+
+        totalLength += columns.stream().mapToInt(Column::getLength).sum() - (columns.size() * 2);
+
         StringBuilder builder = new StringBuilder();
-        builder.append("+");
-        for (int i = 0; i < totalLength; i++) {
+        builder.append(APEX);
+        for(int i = 0; i < totalLength;i++) {
             builder.append("-");
         }
-        builder.append("+\n|");
+        builder.append(APEX+"\n");
 
-        for (int i = 0; i < columns.size(); i++) {
-            builder.append("  ");
-            builder.append(columns.get(i).name);
-            builder.append("  |");
-        }
-        builder.append("\n+");
-        for (int i = 0; i < totalLength; i++) {
-            builder.append("-");
-        }
-        builder.append("+\n|");
+        for(int i = 0;i < columns.size();i++) {
+            final Column column = columns.get(i);
+            builder.append("| ");
+            builder.append(String.format("%-"+column.length+"s",column.name));
 
-        for (int i = 0; i < columns.size(); i++) {
-            builder.append("  ");
-            builder.append(columnMap.get(columns.get(i).name));
-            builder.append("  |");
+            final int gap = column.length - columnMap.get(column.name).toString().getBytes(StandardCharsets.UTF_8).length;
+            for(int j = 0;j < gap;j++) {
+                builder.append(" ");
+            }
+
         }
-        builder.append("\n+");
-        for (int i = 0; i < totalLength; i++) {
+        builder.append(" |\n");
+        builder.append(APEX);
+        for(int i = 0; i < totalLength;i++) {
             builder.append("-");
         }
-        builder.append("+\n");
+        builder.append(APEX);
+
         System.out.println(builder);
+
     }
 
     @Override
@@ -99,6 +104,10 @@ public class DefaultPrinter implements Printer {
 
         public void setLength(int length) {
             this.length = length;
+        }
+
+        public int getLength() {
+            return this.length;
         }
     }
 }
