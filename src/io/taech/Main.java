@@ -41,7 +41,10 @@ public class Main {
 //        bfs.addNeighbours(9, bfs.once(8));
 //        dfs.setTarget(20);
 
-        dfs.search(dfs.get(1));
-
+//        dfs.search(dfs.get(1));
+        Member member = new Member();
+        member.setInfo(2321321, "taechnique");
+        Printer printer = new DefaultPrinter();
+        printer.print(member);
     }
 }

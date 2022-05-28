@@ -3,7 +3,7 @@ package io.taech.print;
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class DefaultPrinter implements Printer {
 
@@ -17,7 +17,6 @@ public class DefaultPrinter implements Printer {
         Objects.requireNonNull(obj);
         final List<Column> columns = new ArrayList<>();
         final Field[] fields = obj.getClass().getDeclaredFields();
-        Integer totalLength = 0;
 
         final Map<String, Object> columnMap = new HashMap<>();
 
@@ -29,7 +28,7 @@ public class DefaultPrinter implements Printer {
                 final String filedName = field.getName();
                 final Integer fieldNameLength = filedName.getBytes(StandardCharsets.UTF_8).length;
                 final Integer length = Math.max(DEFAULT_NULL_LENGTH, fieldNameLength);
-                totalLength += (length + 3);
+
                 columns.add(new Column(length, filedName));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -46,43 +45,59 @@ public class DefaultPrinter implements Printer {
                 final Integer length = value.toString().getBytes(StandardCharsets.UTF_8).length;
                 final Column column = columns.get(i);
                 final int columnLength = column.length;
-                if(columnLength <= length) {
-                    totalLength -= columnLength;
-                    totalLength += length;
-                    column.setLength(length);
-                }
+
+                if(columnLength <= (length + 1))
+                    column.setLength(length + 1);
                 columnMap.put(fieldName, value);
+
             } catch(Exception e) {
                 throw e;
             }
         }
 
-        totalLength += columns.stream().mapToInt(Column::getLength).sum() - (columns.size() * 2);
-
         StringBuilder builder = new StringBuilder();
         builder.append(APEX);
-        for(int i = 0; i < totalLength;i++) {
-            builder.append("-");
-        }
-        builder.append(APEX+"\n");
 
+        columns.stream().forEach(c -> {
+            System.out.println("c.getLength() = " + c.getLength());
+            IntStream.range(0, c.getLength()).forEach((n) -> builder.append("-"));
+            builder.append("+");
+        });
+
+        builder.append("\n");
+        //== 컬럼 명 ==//
         for(int i = 0;i < columns.size();i++) {
             final Column column = columns.get(i);
             builder.append("| ");
             builder.append(String.format("%-"+column.length+"s",column.name));
-
-            final int gap = column.length - columnMap.get(column.name).toString().getBytes(StandardCharsets.UTF_8).length;
-            for(int j = 0;j < gap;j++) {
+            System.out.println("column = " + column.length);
+            int valueLength = columnMap.get(column.name).toString().getBytes(StandardCharsets.UTF_8).length;
+            int gap = column.length - valueLength;
+            System.out.printf("valueLength: %d, gap: %s\n", valueLength, gap);
+            while(--gap > 0)
                 builder.append(" ");
-            }
 
         }
         builder.append(" |\n");
         builder.append(APEX);
-        for(int i = 0; i < totalLength;i++) {
-            builder.append("-");
+
+        columns.stream().forEach(c -> {
+            IntStream.range(0, c.getLength()).forEach((n) -> builder.append("-"));
+            builder.append("+");
+        });
+        builder.append("\n");
+        //== 컬럼 값 ==//
+        for (int i = 0; i < columns.size(); i++) {
+            final Column column = columns.get(i);
+            builder.append("| ");
+            builder.append(String.format("%-" + column.length + "s ", columnMap.get(column.name)));
+            int valueLength = columnMap.get(column.name).toString().getBytes(StandardCharsets.UTF_8).length;
+            int gap = column.length - valueLength;
+            while (--gap > 0)
+                builder.append(" ");
+
         }
-        builder.append(APEX);
+        builder.append(" |\n");
 
         System.out.println(builder);
 
