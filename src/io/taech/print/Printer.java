@@ -1,10 +1,9 @@
 package io.taech.print;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface Printer {
 
-    void print(Object obj) throws Exception;
-
-    void print(Collection<? extends Object> collection) throws Exception;
+    String print(Object obj, String message) throws Exception;
 }

@@ -42,9 +42,14 @@ public class Main {
 //        dfs.setTarget(20);
 
 //        dfs.search(dfs.get(1));
-        Member member = new Member();
-        member.setInfo(2321321, "taechnique");
+        ArrayList<Member> members = new ArrayList<>();
+        members.add(Member.create(1, "taechnique"));
+        members.add(Member.create(2, "Kimchi-dev"));
+        members.add(Member.create(3, "agemoory dsadkl;asm"));
+        members.add(Member.create(4, "open source dmkjlsanjdsaldsmad,.salkadsl;a"));
+        members.add(Member.create(5, "woowahan bros"));
+
         Printer printer = new DefaultPrinter();
-        printer.print(member);
+        System.out.println(printer.print(members, "targeted members"));
     }
 }

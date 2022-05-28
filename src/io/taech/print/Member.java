@@ -12,6 +12,7 @@ public class Member {
     private int age;
     private LocalDateTime createTime;
 
+    protected Member() {}
     public int getId() {
         return this.id;
     }
@@ -20,10 +21,12 @@ public class Member {
         return this.nickname;
     }
 
-    public void setInfo(Integer id, String nickname) {
-        this.id = id;
-        this.nickname = nickname;
-        this.age = 10;
-        this.createTime = LocalDateTime.now();
+    public static Member create(Integer id, String nickname) {
+        Member member = new Member();
+        member.id = id;
+        member.nickname = nickname;
+        member.age = 10;
+        member.createTime = null;
+        return member;
     }
 }
